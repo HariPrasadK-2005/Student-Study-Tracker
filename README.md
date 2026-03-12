@@ -1,18 +1,38 @@
-# Student-Study-Tracker
-Web app to track student study hours and progress
+# 🎓 Student Study Tracker
 
-## Technologies Used
-- HTML
-- CSS
-- JavaScript
-- Java Spring Boot
-- MySQL
+A web application to track student study hours and progress.
 
-## Features
-- User login
-- Add subjects
-- Track study hours
-- Dashboard
+## 🛠️ Tech Stack
+- HTML (Frontend Structure)
+- CSS (Frontend Styling)
+- JavaScript (Frontend Logic)
+- Node.js + Express (Backend)
+- MySQL (Database)
 
-## Author
-Hari Prasad K
+## ✨ Features
+- User Register & Login
+- Add Subjects
+- Log Study Hours Daily
+- Progress Dashboard
+- Weekly Study Goals
+- To-Do List
+
+## 📁 Project Structure
+```
+student-study-tracker/
+├── frontend/
+│   ├── index.html
+│   ├── login.html
+│   ├── register.html
+│   ├── dashboard.html
+│   ├── style.css
+│   └── script.js
+├── backend/
+│   └── server.js
+├── database/
+│   └── schema.sql
+└── README.md
+```
+
+## 👨‍💻 Author
+**Hari Prasad K** 
