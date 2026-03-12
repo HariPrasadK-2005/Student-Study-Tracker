@@ -1,57 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Student Study Tracker</title>
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-    <div class="container">
+    <div class="auth-wrapper">
 
-        <!-- Logo and Title -->
-        <div class="logo">
-            <h1>🎓 Student Study Tracker</h1>
-            <p>Track your study hours and progress</p>
+        <!-- Left Side Panel -->
+        <div class="auth-left">
+            <div class="auth-left-content">
+                <h1>🎓 Student Study Tracker</h1>
+                <p>Your personal study companion to track progress and achieve your goals.</p>
+                <div class="features-list">
+                    <div class="feature-item">📚 Track study hours daily</div>
+                    <div class="feature-item">📊 Visualize your progress</div>
+                    <div class="feature-item">🎯 Set and achieve goals</div>
+                    <div class="feature-item">🔥 Maintain study streaks</div>
+                </div>
+            </div>
         </div>
 
-        <!-- Login Form -->
-        <div class="form-box">
+        <!-- Right Side Form -->
+        <div class="auth-right">
+            <div class="auth-box">
 
-            <h2>Login</h2>
-
-            <form>
-
-                <!-- Email Field -->
-                <div class="input-group">
-                    <label>Email</label>
-                    <input type="email" placeholder="Enter your email" />
+                <div class="auth-header">
+                    <h2>Welcome Back! 👋</h2>
+                    <p>Login to continue your study journey</p>
                 </div>
 
-                <!-- Password Field -->
-                <div class="input-group">
-                    <label>Password</label>
-                    <input type="password" placeholder="Enter your password" />
-                </div>
+                <form id="loginForm">
 
-                <!-- Login Button -->
-                <button type="submit" class="btn">Login</button>
+                    <div class="input-group">
+                        <label>📧 Email Address</label>
+                        <input type="email" id="email" placeholder="Enter your email" />
+                    </div>
 
-            </form>
+                    <div class="input-group">
+                        <label>🔒 Password</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="password" placeholder="Enter your password" />
+                            <span class="toggle-password" onclick="togglePassword('password')">👁️</span>
+                        </div>
+                    </div>
 
-            <!-- Register Link -->
-            <p class="link">
-                Don't have an account? 
-                <a href="register.html">Register here</a>
-            </p>
+                    <p id="errorMsg" class="error-msg"></p>
 
+                    <button type="submit" class="btn">Login →</button>
+
+                </form>
+
+                <div class="divider"><span>or</span></div>
+
+                <p class="link">
+                    Don't have an account?
+                    <a href="register.html">Create one here</a>
+                </p>
+
+            </div>
         </div>
 
     </div>
 
+    <script src="script.js"></script>
 </body>
-
 </html>

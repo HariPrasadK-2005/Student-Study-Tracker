@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Student Study Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Top Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-logo">🎓 Student Study Tracker</div>
+        <div class="nav-links">
+            <a href="dashboard.html">🏠 Home</a>
+            <a href="#">📚 Subjects</a>
+            <a href="#">📊 Progress</a>
+            <a href="#">🎯 Goals</a>
+        </div>
+        <div class="nav-user">
+            <span>👋 Hello, Hari Prasad</span>
+            <a href="login.html" class="logout-btn">Logout</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="dashboard">
+
+        <!-- Stats Cards Row -->
+        <div class="cards-row">
+            <div class="card blue">
+                <div class="card-icon">📚</div>
+                <div class="card-info">
+                    <h3>Total Hours</h3>
+                    <p>24.5 hrs</p>
+                </div>
+            </div>
+            <div class="card green">
+                <div class="card-icon">✅</div>
+                <div class="card-info">
+                    <h3>Subjects</h3>
+                    <p>5 subjects</p>
+                </div>
+            </div>
+            <div class="card orange">
+                <div class="card-icon">🎯</div>
+                <div class="card-info">
+                    <h3>Weekly Goal</h3>
+                    <p>30 hrs</p>
+                </div>
+            </div>
+            <div class="card purple">
+                <div class="card-icon">🔥</div>
+                <div class="card-info">
+                    <h3>Streak</h3>
+                    <p>7 days</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Two Column Layout -->
+        <div class="dashboard-grid">
+
+            <!-- Log Study Hours -->
+            <div class="box">
+                <h3>📝 Log Study Hours</h3>
+                <form class="log-form">
+                    <div class="input-group">
+                        <label>Subject</label>
+                        <select>
+                            <option>Select subject</option>
+                            <option>Mathematics</option>
+                            <option>Physics</option>
+                            <option>Chemistry</option>
+                            <option>Computer Science</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Hours Studied</label>
+                        <input type="number" placeholder="e.g. 2.5" min="0" max="24" />
+                    </div>
+                    <div class="input-group">
+                        <label>Date</label>
+                        <input type="date" />
+                    </div>
+                    <div class="input-group">
+                        <label>Notes (optional)</label>
+                        <textarea placeholder="What did you study today?"></textarea>
+                    </div>
+                    <button type="submit" class="btn">Add Log</button>
+                </form>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="box">
+                <h3>📋 Recent Activity</h3>
+                <table class="activity-table">
+                    <thead>
+                        <tr>
+                            <th>Subject</th>
+                            <th>Hours</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Mathematics</td>
+                            <td>2.5 hrs</td>
+                            <td>12 Mar</td>
+                        </tr>
+                        <tr>
+                            <td>Physics</td>
+                            <td>1.5 hrs</td>
+                            <td>11 Mar</td>
+                        </tr>
+                        <tr>
+                            <td>Computer Science</td>
+                            <td>3.0 hrs</td>
+                            <td>10 Mar</td>
+                        </tr>
+                        <tr>
+                            <td>Chemistry</td>
+                            <td>2.0 hrs</td>
+                            <td>09 Mar</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
