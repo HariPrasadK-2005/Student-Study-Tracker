@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Study Tracker | Master Your Time</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Premium Landing Page Specific Styles */
+        :root {
+            --primary: #3b5bdb;
+            --primary-dark: #2c42a5;
+            --secondary: #7048e8;
+            --accent: #e64980;
+            --bg-color: #f8f9fa;
+            --text-dark: #1a1a2e;
+            --text-light: #777;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-color);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Glassmorphism Navbar */
+        .landing-nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 50px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+        }
+
+        .landing-nav .logo {
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .nav-actions a {
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            margin-left: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .login-btn {
+            color: var(--text-dark);
+        }
+        
+        .login-btn:hover {
+            color: var(--primary);
+        }
+
+        .get-started-btn {
+            padding: 10px 24px;
+            border-radius: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 4px 15px rgba(112, 72, 232, 0.3);
+        }
+
+        .get-started-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(112, 72, 232, 0.5);
+            color: white;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 10%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Background Blob Decor */
+        .blob-1 {
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 500px;
+            height: 500px;
+            background: linear-gradient(135deg, rgba(112, 72, 232, 0.3), rgba(230, 73, 128, 0.3));
+            filter: blur(80px);
+            border-radius: 50%;
+            z-index: -1;
+            animation: float 8s ease-in-out infinite alternate;
+        }
+
+        .blob-2 {
+            position: absolute;
+            bottom: -50px;
+            left: -100px;
+            width: 400px;
+            height: 400px;
+            background: linear-gradient(135deg, rgba(59, 91, 219, 0.3), rgba(112, 72, 232, 0.2));
+            filter: blur(60px);
+            border-radius: 50%;
+            z-index: -1;
+            animation: float 10s ease-in-out infinite alternate-reverse;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px) scale(1); }
+            100% { transform: translateY(30px) scale(1.05); }
+        }
+
+        .hero-content {
+            max-width: 550px;
+            z-index: 2;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background: rgba(59, 91, 219, 0.1);
+            color: var(--primary);
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 13px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(59, 91, 219, 0.2);
+            letter-spacing: 0.5px;
+        }
+
+        .hero-title {
+            font-size: 56px;
+            font-weight: 800;
+            line-height: 1.15;
+            color: var(--text-dark);
+            margin-bottom: 25px;
+        }
+
+        .hero-title span {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-desc {
+            font-size: 18px;
+            color: var(--text-light);
+            line-height: 1.7;
+            margin-bottom: 40px;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .btn-primary {
+            padding: 16px 36px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            text-decoration: none;
+            box-shadow: 0 10px 25px rgba(112, 72, 232, 0.4);
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(112, 72, 232, 0.5);
+        }
+
+        .btn-primary svg {
+            width: 20px;
+            transition: transform 0.3s;
+        }
+
+        .btn-primary:hover svg {
+            transform: translateX(5px);
+        }
+
+        .hero-image {
+            width: 45%;
+            perspective: 1000px;
+            z-index: 2;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+            transform: rotateY(-5deg) rotateX(5deg);
+            transition: transform 0.5s ease;
+        }
+
+        .glass-card:hover {
+            transform: rotateY(0deg) rotateX(0deg) translateY(-10px);
+        }
+
+        .mockup-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            border-bottom: 2px solid rgba(0,0,0,0.05);
+            padding-bottom: 15px;
+        }
+        
+        .mock-line {
+            height: 15px;
+            border-radius: 10px;
+            background: #e9ecef;
+            margin-bottom: 15px;
+        }
+
+        .mock-stat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .mock-stat {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 80px 10%;
+            background: white;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-header h2 {
+            font-size: 36px;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+            font-weight: 800;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+        }
+
+        .feature-box {
+            padding: 35px 25px;
+            background: #f8f9fa;
+            border-radius: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.02);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-box:hover::before {
+            transform: scaleX(1);
+        }
+
+        .feature-box:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+            background: white;
+        }
+
+        .feat-icon {
+            font-size: 40px;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .feature-box h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: var(--text-dark);
+        }
+
+        .feature-box p {
+            font-size: 15px;
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        @media (max-width: 900px) {
+            .hero { flex-direction: column; text-align: center; padding-top: 120px; }
+            .hero-cta { justify-content: center; }
+            .hero-image { width: 90%; margin-top: 50px; }
+            .features-grid { grid-template-columns: 1fr; }
+            .landing-nav { padding: 15px 25px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="landing-nav">
+        <a href="#" class="logo">StudyTracker</a>
+        <div class="nav-actions">
+            <a href="login.html" class="login-btn">Log In</a>
+            <a href="register.html" class="get-started-btn">Get Started Free</a>
+        </div>
+    </nav>
+
+    <!-- Background Elements -->
+    <div class="blob-1"></div>
+    <div class="blob-2"></div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">🎓 The Ultimate Student Tool</div>
+            <h1 class="hero-title">Track your studies. <br><span>Achieve your goals.</span></h1>
+            <p class="hero-desc">Elevate your academic performance. Manage your subjects, log your study hours automatically, track your weekly targets, and conquer your to-do list—all in one beautiful dashboard.</p>
+            
+            <div class="hero-cta">
+                <a href="register.html" class="btn-primary">
+                    Start Tracking Now
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </a>
+            </div>
+        </div>
+
+        <div class="hero-image">
+            <div class="glass-card">
+                <div class="mockup-header">
+                    <div style="font-weight: 700; color: #333;">Welcome back, Student 👋</div>
+                    <div style="width: 40px; height: 40px; background: #e0e7ff; border-radius: 50%;"></div>
+                </div>
+                
+                <div class="mock-stat-grid">
+                    <div class="mock-stat">
+                        <div style="font-size: 12px; color: #777; margin-bottom: 5px;">Total Logged</div>
+                        <div style="font-size: 24px; font-weight: 800; color: #3b5bdb;">124 hrs</div>
+                    </div>
+                    <div class="mock-stat">
+                        <div style="font-size: 12px; color: #777; margin-bottom: 5px;">Pending Todos</div>
+                        <div style="font-size: 24px; font-weight: 800; color: #e64980;">5 Tasks</div>
+                    </div>
+                </div>
+
+                <div style="font-weight: 600; margin-bottom: 10px; color: #444;">Recent Activity</div>
+                <div class="mock-line" style="width: 100%;"></div>
+                <div class="mock-line" style="width: 85%;"></div>
+                <div class="mock-line" style="width: 90%;"></div>
+                <div class="mock-line" style="width: 60%;"></div>
+                
+                <div style="margin-top: 25px; display: flex; justify-content: center;">
+                    <button style="padding: 10px 20px; background: #3b5bdb; color: white; border: none; border-radius: 8px; font-weight: 600;">+ Log Study Time</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="section-header">
+            <h2>Everything you need to excel</h2>
+            <p style="color: var(--text-light); font-size: 16px;">Built specifically for students who want to organize their academic life efficiently.</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-box">
+                <div class="feat-icon">⏱️</div>
+                <h3>Time Logging</h3>
+                <p>Easily log hours spent on individual subjects. Keep track of when and what you studied to ensure consistent effort across the board.</p>
+            </div>
+            
+            <div class="feature-box">
+                <div class="feat-icon">🎯</div>
+                <h3>Goal Setting</h3>
+                <p>Set weekly target hours for different courses and watch your progress unfold. Stay motivated as you inch closer to your objective.</p>
+            </div>
+
+            <div class="feature-box">
+                <div class="feat-icon">📝</div>
+                <h3>Task Management</h3>
+                <p>A built-in minimal to-do list helps you stay on top of assignments, projects, and upcoming exams without needing a second app.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer style="text-align: center; padding: 30px; background: #fff; color: #888; border-top: 1px solid #eee;">
+        <p>&copy; 2026 Student Study Tracker. Designed for productivity.</p>
+    </footer>
+
+    <script>
+        // Check if user is already logged in, redirect to dashboard if true
+        if (localStorage.getItem('token')) {
+            window.location.href = 'dashboard.html';
+        }
+    </script>
+</body>
+</html>

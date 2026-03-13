@@ -178,6 +178,20 @@ if (document.getElementById('logForm') || document.getElementById('activityBody'
                         </div>`;
                 });
             }
+
+            // Update Total Subjects Card
+            const totalSubjectsEl = document.getElementById('totalSubjects');
+            if (totalSubjectsEl) {
+                totalSubjectsEl.textContent = `${subjects.length} subjects`;
+            }
+
+            // Update Weekly Goal (e.g. 5 hours per subject)
+            const weeklyGoalEl = document.getElementById('weeklyGoal');
+            if (weeklyGoalEl) {
+                const calculatedGoal = subjects.length * 5;
+                weeklyGoalEl.textContent = `${calculatedGoal} hrs`;
+            }
+
         } catch (err) {
             console.error('Failed to load subjects:', err);
         }
@@ -218,7 +232,9 @@ if (document.getElementById('logForm') || document.getElementById('activityBody'
         loadLogs();
     };
 
-    // ---- STUDY LOGS ----
+    // ---- STUDY LOGS & CHART ----
+    let progressChartInstance = null;
+
     async function loadLogs() {
         try {
             const res  = await fetch(`${API}/logs`, {
@@ -230,27 +246,90 @@ if (document.getElementById('logForm') || document.getElementById('activityBody'
             if (tableBody) {
                 tableBody.innerHTML = '';
                 let totalHours = 0;
+                
+                // For Chart Data
+                const subjectHoursMap = {};
 
                 logs.forEach(log => {
-                    totalHours += parseFloat(log.duration);
+                    const hours = parseFloat(log.duration);
+                    totalHours += hours;
                     const formattedDate = new Date(log.date).toLocaleDateString('en-IN', {
                         day: '2-digit', month: 'short'
                     });
+                    
+                    // Aggregate hours per subject
+                    if (subjectHoursMap[log.subject_name]) {
+                        subjectHoursMap[log.subject_name].hours += hours;
+                    } else {
+                        subjectHoursMap[log.subject_name] = { 
+                            hours: hours, 
+                            color: log.color || '#3b5bdb' 
+                        };
+                    }
+
                     tableBody.innerHTML += `
                         <tr>
                             <td>${log.subject_name}</td>
                             <td>${log.duration} hrs</td>
                             <td>${formattedDate}</td>
-                            <td><button onclick="deleteLog(${log.id})">🗑️</button></td>
+                            <td><button onclick="deleteLog(${log.id})" style="border:none;background:none;cursor:pointer;color:red;">🗑️</button></td>
                         </tr>`;
                 });
 
                 const totalHoursEl = document.getElementById('totalHours');
                 if (totalHoursEl) totalHoursEl.textContent = totalHours.toFixed(1) + ' hrs';
+                
+                updateChart(subjectHoursMap);
             }
         } catch (err) {
             console.error('Failed to load logs:', err);
         }
+    }
+
+    function updateChart(subjectData) {
+        const ctx = document.getElementById('progressChart');
+        if (!ctx) return;
+        
+        const labels = Object.keys(subjectData);
+        const data = labels.map(label => subjectData[label].hours);
+        const colors = labels.map(label => subjectData[label].color);
+
+        if (progressChartInstance) {
+            progressChartInstance.destroy();
+        }
+
+        progressChartInstance = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Total Hours Studied',
+                    data: data,
+                    backgroundColor: colors,
+                    borderRadius: 6,
+                    maxBarThickness: 50,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                color: 'rgba(255,255,255,0.7)',
+                scales: {
+                    y: { 
+                        beginAtZero: true,
+                        grid: { color: 'rgba(255,255,255,0.1)' },
+                        ticks: { color: 'rgba(255,255,255,0.6)' }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: 'rgba(255,255,255,0.6)' }
+                    }
+                },
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
     }
 
     // Add study log

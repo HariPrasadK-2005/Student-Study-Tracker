@@ -6,7 +6,11 @@
     <title>Login - Student Study Tracker</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="dark-theme">
+
+    <!-- Ambient Background Blobs -->
+    <div class="ambient-blob blob-purple"></div>
+    <div class="ambient-blob blob-blue"></div>
 
     <div class="auth-wrapper">
 
@@ -37,20 +41,20 @@
 
                     <div class="input-group">
                         <label>📧 Email Address</label>
-                        <input type="email" id="email" placeholder="Enter your email" />
+                        <input type="email" id="email" class="neon-input" placeholder="Enter your email" />
                     </div>
 
                     <div class="input-group">
                         <label>🔒 Password</label>
                         <div class="password-wrapper">
-                            <input type="password" id="password" placeholder="Enter your password" />
+                            <input type="password" id="password" class="neon-input" placeholder="Enter your password" />
                             <span class="toggle-password" onclick="togglePassword('password')">👁️</span>
                         </div>
                     </div>
 
                     <p id="errorMsg" class="error-msg"></p>
 
-                    <button type="submit" class="btn">Login →</button>
+                    <button type="submit" class="btn primary-btn glow-on-hover">Login →</button>
 
                 </form>
 

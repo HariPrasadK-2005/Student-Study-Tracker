@@ -4,149 +4,183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Student Study Tracker</title>
+    <title>Dashboard - Student Study Tracker PRO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <!-- Chart.js for visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
-<body>
+<body class="dark-theme">
+    <!-- Ambient Background Blobs -->
+    <div class="ambient-blob blob-purple"></div>
+    <div class="ambient-blob blob-blue"></div>
 
     <!-- Top Navigation Bar -->
-    <nav class="navbar">
-        <div class="nav-logo">🎓 Student Study Tracker</div>
+    <nav class="navbar glass-nav">
+        <div class="nav-logo"><span class="neon-text">🎓Student Study Tracker</span></div>
         <div class="nav-links">
-            <a href="dashboard.html">🏠 Home</a>
-            <a href="#">📚 Subjects</a>
-            <a href="#">📊 Progress</a>
-            <a href="#">🎯 Goals</a>
+            <a href="#home">🏠 Home</a>
+            <a href="#subjects-section">📚 Subjects</a>
+            <a href="#progress-section">📊 Progress</a>
+            <a href="#goals-section">🎯 Goals</a>
         </div>
         <div class="nav-user">
-            <span>👋 Hello, <span id="userName">...</span></span>
-            <button id="logoutBtn" class="logout-btn">Logout</button>
+            <span>👋 <span style="opacity:0.7">Hello,</span> <span id="userName"
+                    style="font-weight:600; color:#fff;">...</span></span>
+            <button id="logoutBtn" class="logout-btn glow-on-hover">Logout</button>
         </div>
     </nav>
 
     <!-- Main Content -->
-    <div class="dashboard">
+    <div class="dashboard-layout" id="home">
 
-        <!-- Stats Cards Row -->
-        <div class="cards-row">
-            <div class="card blue">
-                <div class="card-icon">📚</div>
-                <div class="card-info">
-                    <h3>Total Hours</h3>
-                    <p id="totalHours">0 hrs</p>
-                </div>
-            </div>
-            <div class="card green">
-                <div class="card-icon">✅</div>
-                <div class="card-info">
-                    <h3>Subjects</h3>
-                    <p id="totalSubjects">0 subjects</p>
-                </div>
-            </div>
-            <div class="card orange">
-                <div class="card-icon">🎯</div>
-                <div class="card-info">
-                    <h3>Weekly Goal</h3>
-                    <p>30 hrs</p>
-                </div>
-            </div>
-            <div class="card purple">
-                <div class="card-icon">🔥</div>
-                <div class="card-info">
-                    <h3>Streak</h3>
-                    <p>7 days</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Two Column Layout -->
-        <div class="dashboard-grid">
+        <!-- LEFT SIDEBAR: Inputs & Forms -->
+        <aside class="sidebar">
 
             <!-- Log Study Hours -->
-            <div class="box">
-                <h3>📝 Log Study Hours</h3>
+            <div class="box glass-box">
+                <h3><span class="emoji-icon">📝</span> Log Study Hours</h3>
                 <form id="logForm" class="log-form">
                     <div class="input-group">
                         <label>Subject</label>
-                        <select id="subject">
-                            <option value="">Select subject</option>
-                        </select>
+                        <div class="input-wrapper">
+                            <select id="subject" class="neon-input">
+                                <option value="">Select subject</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="input-group">
                         <label>Hours Studied</label>
-                        <input id="hours" type="number" placeholder="e.g. 2.5" min="0" max="24" step="0.5" />
+                        <div class="input-wrapper">
+                            <input id="hours" type="number" class="neon-input" placeholder="e.g. 2.5" min="0" max="24"
+                                step="0.5" />
+                        </div>
                     </div>
                     <div class="input-group">
                         <label>Date</label>
-                        <input id="date" type="date" />
+                        <div class="input-wrapper">
+                            <input id="date" type="date" class="neon-input" />
+                        </div>
                     </div>
                     <div class="input-group">
                         <label>Notes (optional)</label>
-                        <textarea id="notes" placeholder="What did you study today?"></textarea>
+                        <div class="input-wrapper">
+                            <textarea id="notes" class="neon-input" placeholder="What did you study today?"></textarea>
+                        </div>
                     </div>
-                    <p id="logError" style="display:none; color:red;"></p>
-                    <button type="submit" class="btn">Add Log</button>
+                    <p id="logError" style="display:none; color:#ff3366; font-size:13px; margin-bottom:10px;"></p>
+                    <button type="submit" class="btn primary-btn glow-on-hover">Add Log</button>
                 </form>
             </div>
 
-            <!-- Recent Activity -->
-            <div class="box">
-                <h3>📋 Recent Activity</h3>
-                <table class="activity-table">
-                    <thead>
-                        <tr>
-                            <th>Subject</th>
-                            <th>Hours</th>
-                            <th>Date</th>
-                            <th>Delete</th>
-                        </tr>
-                    </thead>
-                    <tbody id="activityBody">
-                        <tr><td colspan="4" style="text-align:center;">No logs yet</td></tr>
-                    </tbody>
-                </table>
-            </div>
-
-        </div>
-
-        <!-- Todos Section -->
-        <div class="dashboard-grid" style="margin-top: 20px;">
-
             <!-- Add Todo -->
-            <div class="box">
-                <h3>✅ To-Do List</h3>
+            <div class="box glass-box" id="goals-section">
+                <h3><span class="emoji-icon">✅</span> To-Do List</h3>
                 <form id="todoForm" class="log-form">
-                    <div class="input-group">
-                        <label>Task Title</label>
-                        <input id="todoTitle" type="text" placeholder="e.g. Complete Chapter 5" />
+                    <div class="input-wrapper" style="margin-bottom: 10px;">
+                        <input id="todoTitle" type="text" class="neon-input" placeholder="e.g. Complete Chapter 5" />
                     </div>
-                    <button type="submit" class="btn">Add Task</button>
+                    <button type="submit" class="btn secondary-btn glow-on-hover">Add Task</button>
                 </form>
                 <div id="todoList" style="margin-top: 15px;"></div>
             </div>
 
             <!-- Add Subject -->
-            <div class="box">
-                <h3>📚 My Subjects</h3>
+            <div class="box glass-box" id="subjects-section">
+                <h3><span class="emoji-icon">📚</span> My Subjects</h3>
                 <form id="subjectForm" class="log-form">
-                    <div class="input-group">
-                        <label>Subject Name</label>
-                        <input id="subjectName" type="text" placeholder="e.g. Mathematics" />
+                    <div class="input-wrapper" style="margin-bottom: 10px;">
+                        <input id="subjectName" type="text" class="neon-input" placeholder="e.g. Mathematics" />
                     </div>
-                    <div class="input-group">
-                        <label>Color</label>
-                        <input id="subjectColor" type="color" value="#4F46E5" />
+                    <div class="input-group" style="display:flex; align-items:center; gap:10px;">
+                        <label style="margin:0;">Style Color:</label>
+                        <input id="subjectColor" type="color" value="#00d2ff"
+                            style="border:none; border-radius:4px; width:40px; height:30px; cursor:pointer;" />
                     </div>
-                    <button type="submit" class="btn">Add Subject</button>
+                    <button type="submit" class="btn secondary-btn glow-on-hover" style="margin-top:10px;">Add
+                        Subject</button>
                 </form>
                 <div id="subjectList" style="margin-top: 15px;"></div>
             </div>
 
-        </div>
+        </aside>
 
+        <!-- RIGHT MAIN CONTENT: Metrics & Visualize -->
+        <main class="main-content">
+
+            <!-- Stats Cards Row -->
+            <div class="cards-row">
+                <div class="card glass-card blue-glow">
+                    <div class="card-icon">⏳</div>
+                    <div class="card-info">
+                        <h3>Total Hours</h3>
+                        <p id="totalHours" class="neon-text-blue">0 hrs</p>
+                    </div>
+                </div>
+                <div class="card glass-card green-glow">
+                    <div class="card-icon">🧭</div>
+                    <div class="card-info">
+                        <h3>Subjects</h3>
+                        <p id="totalSubjects" class="neon-text-green">0</p>
+                    </div>
+                </div>
+                <div class="card glass-card orange-glow">
+                    <div class="card-icon">🎯</div>
+                    <div class="card-info">
+                        <h3>Weekly Goal</h3>
+                        <p id="weeklyGoal" class="neon-text-orange">0 hrs</p>
+                    </div>
+                </div>
+                <div class="card glass-card purple-glow">
+                    <div class="card-icon">🔥</div>
+                    <div class="card-info">
+                        <h3>Streak</h3>
+                        <p class="neon-text-purple">7 days</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visualization / Chart -->
+            <div class="box glass-box chart-box" id="progress-section">
+                <div class="box-header">
+                    <h3><span class="emoji-icon">📈</span> Study Progress Overview</h3>
+                </div>
+                <div
+                    style="position: relative; height: 350px; width: 100%; border-radius: 12px; background: rgba(0,0,0,0.2); padding:10px;">
+                    <canvas id="progressChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="box glass-box table-box">
+                <div class="box-header">
+                    <h3><span class="emoji-icon">📋</span> Recent Activity Log</h3>
+                </div>
+                <div class="table-responsive">
+                    <table class="activity-table">
+                        <thead>
+                            <tr>
+                                <th>Subject</th>
+                                <th>Duration</th>
+                                <th>Date Rendered</th>
+                                <th style="text-align:center;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="activityBody">
+                            <tr>
+                                <td colspan="4" style="text-align:center; opacity:0.5;">No logs yet. Start grinding!
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
     </div>
 
     <script src="script.js"></script>
 </body>
+
 </html>
