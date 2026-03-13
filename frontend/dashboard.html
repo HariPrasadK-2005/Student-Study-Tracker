@@ -20,8 +20,8 @@
             <a href="#">🎯 Goals</a>
         </div>
         <div class="nav-user">
-            <span>👋 Hello, Hari Prasad</span>
-            <a href="login.html" class="logout-btn">Logout</a>
+            <span>👋 Hello, <span id="userName">...</span></span>
+            <button id="logoutBtn" class="logout-btn">Logout</button>
         </div>
     </nav>
 
@@ -34,14 +34,14 @@
                 <div class="card-icon">📚</div>
                 <div class="card-info">
                     <h3>Total Hours</h3>
-                    <p>24.5 hrs</p>
+                    <p id="totalHours">0 hrs</p>
                 </div>
             </div>
             <div class="card green">
                 <div class="card-icon">✅</div>
                 <div class="card-info">
                     <h3>Subjects</h3>
-                    <p>5 subjects</p>
+                    <p id="totalSubjects">0 subjects</p>
                 </div>
             </div>
             <div class="card orange">
@@ -66,29 +66,26 @@
             <!-- Log Study Hours -->
             <div class="box">
                 <h3>📝 Log Study Hours</h3>
-                <form class="log-form">
+                <form id="logForm" class="log-form">
                     <div class="input-group">
                         <label>Subject</label>
-                        <select>
-                            <option>Select subject</option>
-                            <option>Mathematics</option>
-                            <option>Physics</option>
-                            <option>Chemistry</option>
-                            <option>Computer Science</option>
+                        <select id="subject">
+                            <option value="">Select subject</option>
                         </select>
                     </div>
                     <div class="input-group">
                         <label>Hours Studied</label>
-                        <input type="number" placeholder="e.g. 2.5" min="0" max="24" />
+                        <input id="hours" type="number" placeholder="e.g. 2.5" min="0" max="24" step="0.5" />
                     </div>
                     <div class="input-group">
                         <label>Date</label>
-                        <input type="date" />
+                        <input id="date" type="date" />
                     </div>
                     <div class="input-group">
                         <label>Notes (optional)</label>
-                        <textarea placeholder="What did you study today?"></textarea>
+                        <textarea id="notes" placeholder="What did you study today?"></textarea>
                     </div>
+                    <p id="logError" style="display:none; color:red;"></p>
                     <button type="submit" class="btn">Add Log</button>
                 </form>
             </div>
@@ -102,35 +99,54 @@
                             <th>Subject</th>
                             <th>Hours</th>
                             <th>Date</th>
+                            <th>Delete</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>Mathematics</td>
-                            <td>2.5 hrs</td>
-                            <td>12 Mar</td>
-                        </tr>
-                        <tr>
-                            <td>Physics</td>
-                            <td>1.5 hrs</td>
-                            <td>11 Mar</td>
-                        </tr>
-                        <tr>
-                            <td>Computer Science</td>
-                            <td>3.0 hrs</td>
-                            <td>10 Mar</td>
-                        </tr>
-                        <tr>
-                            <td>Chemistry</td>
-                            <td>2.0 hrs</td>
-                            <td>09 Mar</td>
-                        </tr>
+                    <tbody id="activityBody">
+                        <tr><td colspan="4" style="text-align:center;">No logs yet</td></tr>
                     </tbody>
                 </table>
             </div>
 
         </div>
+
+        <!-- Todos Section -->
+        <div class="dashboard-grid" style="margin-top: 20px;">
+
+            <!-- Add Todo -->
+            <div class="box">
+                <h3>✅ To-Do List</h3>
+                <form id="todoForm" class="log-form">
+                    <div class="input-group">
+                        <label>Task Title</label>
+                        <input id="todoTitle" type="text" placeholder="e.g. Complete Chapter 5" />
+                    </div>
+                    <button type="submit" class="btn">Add Task</button>
+                </form>
+                <div id="todoList" style="margin-top: 15px;"></div>
+            </div>
+
+            <!-- Add Subject -->
+            <div class="box">
+                <h3>📚 My Subjects</h3>
+                <form id="subjectForm" class="log-form">
+                    <div class="input-group">
+                        <label>Subject Name</label>
+                        <input id="subjectName" type="text" placeholder="e.g. Mathematics" />
+                    </div>
+                    <div class="input-group">
+                        <label>Color</label>
+                        <input id="subjectColor" type="color" value="#4F46E5" />
+                    </div>
+                    <button type="submit" class="btn">Add Subject</button>
+                </form>
+                <div id="subjectList" style="margin-top: 15px;"></div>
+            </div>
+
+        </div>
+
     </div>
 
+    <script src="script.js"></script>
 </body>
 </html>
