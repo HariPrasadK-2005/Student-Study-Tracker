@@ -13,6 +13,11 @@ A web application to track student study hours and progress.
 - User Register & Login
 - Add Subjects
 - Log Study Hours Daily
+- Progress Dashboard with Chart.js Visualization
+- Weekly Study Goals (Dynamic Calculation)
+- To-Do List
+- Premium Dark Mode Neon UI
+- Log Study Hours Daily
 - Progress Dashboard
 - Weekly Study Goals
 - To-Do List
@@ -28,6 +33,18 @@ student-study-tracker/
 │   ├── style.css
 │   └── script.js
 ├── backend/
+│   ├── config/
+│   │   └── db.js
+│   ├── middleware/
+│   │   └── auth.js
+│   ├── routes/
+│   │   ├── auth.js
+│   │   ├── goals.js
+│   │   ├── logs.js
+│   │   ├── subjects.js
+│   │   └── todos.js
+│   ├── .env
+│   ├── package.json
 │   └── server.js
 ├── database/
 │   └── schema.sql

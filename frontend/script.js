@@ -158,6 +158,7 @@ if (document.getElementById('logForm') || document.getElementById('activityBody'
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const subjects = await res.json();
+            window.subjectsData = subjects; // Store globally for dynamic cards
 
             const subjectSelect = document.getElementById('subject');
             if (subjectSelect) {
@@ -204,8 +205,11 @@ if (document.getElementById('logForm') || document.getElementById('activityBody'
             e.preventDefault();
             const name  = document.getElementById('subjectName').value.trim();
             const color = document.getElementById('subjectColor')?.value || '#4F46E5';
+            const start_date = document.getElementById('subjectStart').value;
+            const end_date = document.getElementById('subjectEnd').value;
+            const daily_goal = document.getElementById('dailyGoal').value;
 
-            if (!name) return;
+            if (!name || !start_date || !end_date || !daily_goal) return;
 
             await fetch(`${API}/subjects`, {
                 method  : 'POST',
@@ -213,7 +217,7 @@ if (document.getElementById('logForm') || document.getElementById('activityBody'
                     'Content-Type'  : 'application/json',
                     'Authorization' : `Bearer ${token}`
                 },
-                body: JSON.stringify({ name, color })
+                body: JSON.stringify({ name, color, start_date, end_date, daily_goal })
             });
 
             subjectForm.reset();
@@ -280,10 +284,67 @@ if (document.getElementById('logForm') || document.getElementById('activityBody'
                 if (totalHoursEl) totalHoursEl.textContent = totalHours.toFixed(1) + ' hrs';
                 
                 updateChart(subjectHoursMap);
+                renderDynamicSubjectCards(subjectHoursMap);
             }
         } catch (err) {
             console.error('Failed to load logs:', err);
         }
+    }
+
+    function renderDynamicSubjectCards(subjectHoursMap) {
+        const container = document.getElementById('subjects-progress');
+        if (!container) return;
+        container.innerHTML = '';
+        
+        if (!window.subjectsData || window.subjectsData.length === 0) {
+            container.innerHTML = '<p style="color:var(--text-muted); padding:20px;">No subjects added.</p>';
+            return;
+        }
+
+        window.subjectsData.forEach(sub => {
+            const studied = subjectHoursMap[sub.name] ? subjectHoursMap[sub.name].hours : 0;
+            
+            let totalGoal = 0;
+            let remaining = 0;
+            let progressPct = 0;
+            
+            if (sub.start_date && sub.end_date && sub.daily_goal > 0) {
+                const start = new Date(sub.start_date);
+                const end = new Date(sub.end_date);
+                const diffTime = Math.abs(end - start);
+                let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1; 
+                if (diffDays <= 0) diffDays = 1;
+                
+                totalGoal = diffDays * sub.daily_goal;
+                remaining = Math.max(0, totalGoal - studied);
+                progressPct = Math.min(100, (studied / totalGoal) * 100);
+            }
+
+            if (totalGoal === 0) {
+                container.innerHTML += `
+                    <div class="subject-card glass-card" style="border-color:${sub.color}">
+                        <div class="subject-card-header">
+                            <h4 style="font-size:20px;">${sub.name}</h4>
+                        </div>
+                        <p class="subject-time" style="margin-top:10px;">${studied.toFixed(1)} <span style="font-size: 12px; color: var(--text-muted)">hrs total</span></p>
+                        <div class="progress-bar-container" style="margin-top:10px;">
+                            <div class="progress-bar" style="width: 100%; background:${sub.color}; box-shadow: 0 0 10px ${sub.color}"></div>
+                        </div>
+                    </div>`;
+            } else {
+                container.innerHTML += `
+                    <div class="subject-card glass-card" style="border-color:${sub.color}">
+                        <div class="subject-card-header">
+                            <h4 style="font-size:20px;">${sub.name}</h4>
+                        </div>
+                        <p class="subject-time" style="margin-top:10px;">${studied.toFixed(1)} <span style="font-size: 14px; color: var(--text-muted)">/ ${totalGoal.toFixed(1)} hrs</span></p>
+                        <p style="font-size: 15px; font-weight:700; color: ${sub.color}; margin-top:-5px;">Remaining: ${remaining.toFixed(1)} hrs</p>
+                        <div class="progress-bar-container" style="margin-top:10px;">
+                            <div class="progress-bar" style="width: ${progressPct}%; background:${sub.color}; box-shadow: 0 0 10px ${sub.color}"></div>
+                        </div>
+                    </div>`;
+            }
+        });
     }
 
     function updateChart(subjectData) {
@@ -386,79 +447,49 @@ if (document.getElementById('logForm') || document.getElementById('activityBody'
         loadLogs();
     };
 
-    // ---- TODOS ----
-    async function loadTodos() {
-        try {
-            const res   = await fetch(`${API}/todos`, {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-            const todos = await res.json();
-
-            const todoList = document.getElementById('todoList');
-            if (todoList) {
-                todoList.innerHTML = '';
-                todos.forEach(todo => {
-                    todoList.innerHTML += `
-                        <div class="todo-item ${todo.is_done ? 'done' : ''}">
-                            <input type="checkbox" ${todo.is_done ? 'checked' : ''}
-                                onchange="toggleTodo(${todo.id}, this.checked)">
-                            <span>${todo.title}</span>
-                            <button onclick="deleteTodo(${todo.id})">🗑️</button>
-                        </div>`;
-                });
-            }
-        } catch (err) {
-            console.error('Failed to load todos:', err);
-        }
-    }
-
-    // Add todo
-    const todoForm = document.getElementById('todoForm');
-    if (todoForm) {
-        todoForm.addEventListener('submit', async function (e) {
-            e.preventDefault();
-            const title = document.getElementById('todoTitle').value.trim();
-            if (!title) return;
-
-            await fetch(`${API}/todos`, {
-                method  : 'POST',
-                headers : {
-                    'Content-Type'  : 'application/json',
-                    'Authorization' : `Bearer ${token}`
-                },
-                body: JSON.stringify({ title })
-            });
-
-            todoForm.reset();
-            loadTodos();
-        });
-    }
-
-    // Toggle todo
-    window.toggleTodo = async function (id, is_done) {
-        await fetch(`${API}/todos/${id}`, {
-            method  : 'PATCH',
-            headers : {
-                'Content-Type'  : 'application/json',
-                'Authorization' : `Bearer ${token}`
-            },
-            body: JSON.stringify({ is_done })
-        });
-        loadTodos();
-    };
-
-    // Delete todo
-    window.deleteTodo = async function (id) {
-        if (!confirm('Delete this todo?')) return;
-        await fetch(`${API}/todos/${id}`, {
-            method  : 'DELETE',
-            headers : { 'Authorization': `Bearer ${token}` }
-        });
-        loadTodos();
-    };
-
     // ---- INITIAL LOAD ----
     loadSubjects();
     loadLogs();
-    loadTodos();
+}
+
+// =============================================
+// KANBAN DRAG AND DROP LOGIC
+// =============================================
+function allowDropKanban(ev) {
+    ev.preventDefault();
+}
+
+function dragKanban(ev) {
+    ev.dataTransfer.setData("text", ev.target.id);
+}
+
+function dropKanban(ev) {
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("text");
+    var draggedCard = document.getElementById(data);
+    
+    if (!draggedCard) return;
+
+    // Find the closest kanban-cards container
+    let dropZone = ev.target;
+    while(dropZone && dropZone !== document.body && !dropZone.classList.contains('kanban-cards')) {
+        dropZone = dropZone.parentElement;
+    }
+    
+    if (dropZone && dropZone.classList.contains('kanban-cards')) {
+        dropZone.appendChild(draggedCard);
+        updateKanbanCounts();
+    }
+}
+
+function updateKanbanCounts() {
+    const columns = ['todo', 'inprogress', 'done'];
+    columns.forEach(col => {
+        const columnEl = document.getElementById('kanban-' + col);
+        if(columnEl) {
+            const count = columnEl.querySelectorAll('.kanban-card').length;
+            const badge = columnEl.querySelector('.badge');
+            if(badge) badge.textContent = count;
+        }
+    });
 }

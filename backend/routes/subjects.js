@@ -21,11 +21,18 @@ router.get('/', (req, res) => {
 
 // Add subject
 router.post('/', (req, res) => {
-    const { name, color } = req.body;
+    const { name, color, start_date, end_date, daily_goal } = req.body;
     if (!name) return res.status(400).json({ message: 'Subject name is required' });
 
-    const sql = 'INSERT INTO subjects (user_id, name, color) VALUES (?, ?, ?)';
-    db.query(sql, [req.user.id, name, color || '#4F46E5'], (err, result) => {
+    const sql = 'INSERT INTO subjects (user_id, name, color, start_date, end_date, daily_goal) VALUES (?, ?, ?, ?, ?, ?)';
+    db.query(sql, [
+        req.user.id, 
+        name, 
+        color || '#4F46E5', 
+        start_date || null, 
+        end_date || null, 
+        daily_goal || 0
+    ], (err, result) => {
         if (err) {
             console.error('Error adding subject:', err);
             return res.status(500).json({ message: 'Database error occurred' });

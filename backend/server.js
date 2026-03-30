@@ -13,8 +13,6 @@ dotenv.config();
 const authRoutes = require('./routes/auth');
 const subjectRoutes = require('./routes/subjects');
 const logRoutes = require('./routes/logs');
-const goalRoutes = require('./routes/goals');
-const todoRoutes = require('./routes/todos');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -38,8 +36,6 @@ app.get('/', (req, res) => {
 app.use('/api', authRoutes);
 app.use('/api/subjects', subjectRoutes);
 app.use('/api/logs', logRoutes);
-app.use('/api/goals', goalRoutes);
-app.use('/api/todos', todoRoutes);
 
 // =============================================
 // GLOBAL ERROR HANDLER

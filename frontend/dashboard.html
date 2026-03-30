@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Student Study Tracker PRO</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=2">
     <!-- Chart.js for visualization -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -21,9 +21,9 @@
         <div class="nav-logo"><span class="neon-text">🎓Student Study Tracker</span></div>
         <div class="nav-links">
             <a href="#home">🏠 Home</a>
-            <a href="#subjects-section">📚 Subjects</a>
+            <a href="#subjects-progress">📚 Subjects</a>
             <a href="#progress-section">📊 Progress</a>
-            <a href="#goals-section">🎯 Goals</a>
+            <a href="#kanban-section">🎯 Goals</a>
         </div>
         <div class="nav-user">
             <span>👋 <span style="opacity:0.7">Hello,</span> <span id="userName"
@@ -91,7 +91,19 @@
                 <h3><span class="emoji-icon">📚</span> My Subjects</h3>
                 <form id="subjectForm" class="log-form">
                     <div class="input-wrapper" style="margin-bottom: 10px;">
-                        <input id="subjectName" type="text" class="neon-input" placeholder="e.g. Mathematics" />
+                        <input id="subjectName" type="text" class="neon-input" placeholder="e.g. Mathematics" required />
+                    </div>
+                    <div class="input-group" style="margin-bottom: 10px;">
+                        <label>Start Date</label>
+                        <input id="subjectStart" type="date" class="neon-input" required />
+                    </div>
+                    <div class="input-group" style="margin-bottom: 10px;">
+                        <label>End Date</label>
+                        <input id="subjectEnd" type="date" class="neon-input" required />
+                    </div>
+                    <div class="input-group" style="margin-bottom: 10px;">
+                        <label>Daily Goal (hrs)</label>
+                        <input id="dailyGoal" type="number" class="neon-input" placeholder="e.g. 2" min="0" step="0.5" required />
                     </div>
                     <div class="input-group" style="display:flex; align-items:center; gap:10px;">
                         <label style="margin:0;">Style Color:</label>
@@ -141,6 +153,11 @@
                 </div>
             </div>
 
+            <!-- Subject Progress Cards (New) -->
+            <div class="subject-cards-container" id="subjects-progress">
+                <!-- Dynamically generated via script.js -->
+            </div>
+
             <!-- Visualization / Chart -->
             <div class="box glass-box chart-box" id="progress-section">
                 <div class="box-header">
@@ -174,6 +191,61 @@
                             </tr>
                         </tbody>
                     </table>
+                </div>
+            </div>
+
+            <!-- Kanban Project Board (New) -->
+            <div class="box glass-box kanban-board-wrapper" id="kanban-section">
+                <div class="box-header" style="margin-bottom: 20px;">
+                    <h3><span class="emoji-icon">📋</span> Project Board</h3>
+                    <p style="color: var(--text-muted); font-size: 13px;">Drag and drop your tasks below</p>
+                </div>
+                <div class="kanban-board">
+                    <!-- To Do Column -->
+                    <div class="kanban-column" id="kanban-todo">
+                        <div class="kanban-column-header">
+                            <h4>To Do</h4>
+                            <span class="badge">3</span>
+                        </div>
+                        <div class="kanban-cards" ondrop="dropKanban(event)" ondragover="allowDropKanban(event)">
+                            <div class="kanban-card neon-border-purple" draggable="true" ondragstart="dragKanban(event)" id="card-1">
+                                <p>Finish Calculus Assignment</p>
+                                <span class="tag">Math</span>
+                            </div>
+                            <div class="kanban-card neon-border-purple" draggable="true" ondragstart="dragKanban(event)" id="card-2">
+                                <p>Read Chapter 5</p>
+                                <span class="tag">Physics</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- In Progress Column -->
+                    <div class="kanban-column" id="kanban-inprogress">
+                        <div class="kanban-column-header">
+                            <h4>In Progress</h4>
+                            <span class="badge neon-bg-blue" style="color:#000;">1</span>
+                        </div>
+                        <div class="kanban-cards" ondrop="dropKanban(event)" ondragover="allowDropKanban(event)">
+                            <div class="kanban-card neon-border-blue" draggable="true" ondragstart="dragKanban(event)" id="card-3">
+                                <p>Build Web App UI</p>
+                                <span class="tag">Comp Sci</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Done Column -->
+                    <div class="kanban-column" id="kanban-done">
+                        <div class="kanban-column-header">
+                            <h4>Done</h4>
+                            <span class="badge neon-bg-green" style="color:#000;">2</span>
+                        </div>
+                        <div class="kanban-cards" ondrop="dropKanban(event)" ondragover="allowDropKanban(event)">
+                            <div class="kanban-card neon-border-green" draggable="true" ondragstart="dragKanban(event)" id="card-4">
+                                <p>Write Essay Draft</p>
+                                <span class="tag">English</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
