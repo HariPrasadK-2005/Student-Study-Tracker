@@ -1,7 +1,7 @@
 // =============================================
 // STUDENT STUDY TRACKER — FRONTEND SCRIPT
 // =============================================
-const API = 'https://student-study-tracker-2u4k.onrender.com/api';
+const API = '/api';
 
 // =============================================
 // HELPER FUNCTIONS

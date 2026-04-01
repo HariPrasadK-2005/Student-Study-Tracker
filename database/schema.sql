@@ -1,5 +1,4 @@
-CREATE DATABASE IF NOT EXISTS study_tracker;
-USE study_tracker;
+-- Database is already selected (e.g. defaultdb on Aiven)
 
 -- Users Table
 CREATE TABLE IF NOT EXISTS users (

@@ -5,6 +5,7 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const path = require('path');
 
 // Load environment variables
 dotenv.config();
@@ -24,11 +25,9 @@ app.use(cors());
 app.use(express.json());
 
 // =============================================
-// TEST ROUTE
+// SERVE FRONTEND STATIC FILES
 // =============================================
-app.get('/', (req, res) => {
-    res.json({ message: '🎓 Student Study Tracker API is running!', status: 'success' });
-});
+app.use(express.static(path.join(__dirname, '../frontend')));
 
 // =============================================
 // API ROUTES
