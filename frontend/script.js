@@ -446,9 +446,81 @@ if (document.getElementById('logForm') || document.getElementById('activityBody'
         loadLogs();
     };
 
+    // ---- KANBAN BOARD LOGIC ----
+    window.loadTasks = async function() {
+        try {
+            const res = await fetch(`${API}/tasks`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const tasks = await res.json();
+            
+            const todoList = document.getElementById('kanban-todo-list');
+            const inprogressList = document.getElementById('kanban-inprogress-list');
+            const doneList = document.getElementById('kanban-done-list');
+            
+            if (todoList && inprogressList && doneList) {
+                todoList.innerHTML = '';
+                inprogressList.innerHTML = '';
+                doneList.innerHTML = '';
+
+                tasks.forEach(task => {
+                    const borderColors = {
+                        'todo': 'neon-border-purple',
+                        'inprogress': 'neon-border-blue',
+                        'done': 'neon-border-green'
+                    };
+                    
+                    const cardHtml = `
+                        <div class="kanban-card ${borderColors[task.status]}" draggable="true" ondragstart="dragKanban(event)" id="task-${task.id}" data-id="${task.id}">
+                            <p>${task.title}</p>
+                            <button onclick="deleteTask(${task.id})" style="border:none;background:none;cursor:pointer;color:red;font-size:12px;float:right;">🗑️</button>
+                        </div>`;
+                    
+                    if(task.status === 'todo') todoList.innerHTML += cardHtml;
+                    else if(task.status === 'inprogress') inprogressList.innerHTML += cardHtml;
+                    else if(task.status === 'done') doneList.innerHTML += cardHtml;
+                });
+                updateKanbanCounts();
+            }
+        } catch(err) {
+            console.error('Failed to load tasks:', err);
+        }
+    }
+
+    const todoForm = document.getElementById('todoForm');
+    if (todoForm) {
+        todoForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const title = document.getElementById('todoTitle').value.trim();
+            if (!title) return;
+
+            await fetch(`${API}/tasks`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ title })
+            });
+
+            todoForm.reset();
+            window.loadTasks();
+        });
+    }
+
+    window.deleteTask = async function(id) {
+        if (!confirm('Delete this task?')) return;
+        await fetch(`${API}/tasks/${id}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        window.loadTasks();
+    };
+
     // ---- INITIAL LOAD ----
     loadSubjects();
     loadLogs();
+    if(document.getElementById('kanban-todo-list')) window.loadTasks();
 }
 
 // =============================================
@@ -462,7 +534,7 @@ function dragKanban(ev) {
     ev.dataTransfer.setData("text", ev.target.id);
 }
 
-function dropKanban(ev) {
+async function dropKanban(ev) {
     ev.preventDefault();
     var data = ev.dataTransfer.getData("text");
     var draggedCard = document.getElementById(data);
@@ -476,8 +548,40 @@ function dropKanban(ev) {
     }
     
     if (dropZone && dropZone.classList.contains('kanban-cards')) {
+        draggedCard.classList.remove('neon-border-purple', 'neon-border-blue', 'neon-border-green');
+        let newStatus = 'todo';
+        if (dropZone.id === 'kanban-todo-list') {
+            draggedCard.classList.add('neon-border-purple');
+            newStatus = 'todo';
+        } else if (dropZone.id === 'kanban-inprogress-list') {
+            draggedCard.classList.add('neon-border-blue');
+            newStatus = 'inprogress';
+        } else if (dropZone.id === 'kanban-done-list') {
+            draggedCard.classList.add('neon-border-green');
+            newStatus = 'done';
+        }
+
         dropZone.appendChild(draggedCard);
         updateKanbanCounts();
+
+        // Save to backend
+        const taskId = draggedCard.getAttribute('data-id');
+        if (taskId) {
+            const token = localStorage.getItem('token');
+            const API = '/api'; // fallback for global scope
+            try {
+                await fetch(`${API}/tasks/${taskId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ status: newStatus })
+                });
+            } catch(e) {
+                console.error("Failed to update status", e);
+            }
+        }
     }
 }
 

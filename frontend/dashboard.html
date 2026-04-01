@@ -207,15 +207,8 @@
                             <h4>To Do</h4>
                             <span class="badge">3</span>
                         </div>
-                        <div class="kanban-cards" ondrop="dropKanban(event)" ondragover="allowDropKanban(event)">
-                            <div class="kanban-card neon-border-purple" draggable="true" ondragstart="dragKanban(event)" id="card-1">
-                                <p>Finish Calculus Assignment</p>
-                                <span class="tag">Math</span>
-                            </div>
-                            <div class="kanban-card neon-border-purple" draggable="true" ondragstart="dragKanban(event)" id="card-2">
-                                <p>Read Chapter 5</p>
-                                <span class="tag">Physics</span>
-                            </div>
+                        <div class="kanban-cards" id="kanban-todo-list" ondrop="dropKanban(event)" ondragover="allowDropKanban(event)">
+                            <!-- Dynamic tasks go here -->
                         </div>
                     </div>
                     
@@ -225,11 +218,8 @@
                             <h4>In Progress</h4>
                             <span class="badge neon-bg-blue" style="color:#000;">1</span>
                         </div>
-                        <div class="kanban-cards" ondrop="dropKanban(event)" ondragover="allowDropKanban(event)">
-                            <div class="kanban-card neon-border-blue" draggable="true" ondragstart="dragKanban(event)" id="card-3">
-                                <p>Build Web App UI</p>
-                                <span class="tag">Comp Sci</span>
-                            </div>
+                        <div class="kanban-cards" id="kanban-inprogress-list" ondrop="dropKanban(event)" ondragover="allowDropKanban(event)">
+                            <!-- Dynamic tasks go here -->
                         </div>
                     </div>
 
@@ -239,11 +229,8 @@
                             <h4>Done</h4>
                             <span class="badge neon-bg-green" style="color:#000;">2</span>
                         </div>
-                        <div class="kanban-cards" ondrop="dropKanban(event)" ondragover="allowDropKanban(event)">
-                            <div class="kanban-card neon-border-green" draggable="true" ondragstart="dragKanban(event)" id="card-4">
-                                <p>Write Essay Draft</p>
-                                <span class="tag">English</span>
-                            </div>
+                        <div class="kanban-cards" id="kanban-done-list" ondrop="dropKanban(event)" ondragover="allowDropKanban(event)">
+                            <!-- Dynamic tasks go here -->
                         </div>
                     </div>
                 </div>
